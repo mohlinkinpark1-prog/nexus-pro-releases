@@ -1,13 +1,15 @@
 {
   "numero": "REP-2026-0001",
-  "statut": "EN_REPARATION",
+  "statut": "REPARE",
+  "maj": "2026-11-12T20:30:00.000Z",
+  "client": "Ali B.",
   "marque": "Apple",
   "modele": "iPhone 13 Pro",
-  "client": "Ali B.",
   "technicien": "Youssef",
   "date_reception": "2026-11-05",
   "date_restitution": null,
   "garantie_jours": 90,
-  "diagnostic": "Écran fissuré, remplacement vitre arrière nécessaire",
-  "montant": 24000
+  "diagnostic": "Écran fissuré, remplacement de la vitre arrière nécessaire",
+  "montant": 24000,
+  "site": "https://mohlinkinpark1-prog.github.io/nexus-pro-releases"
 }
