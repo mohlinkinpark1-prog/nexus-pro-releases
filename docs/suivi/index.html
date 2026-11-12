@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NEXUS PRO — Suivi en ligne</title>
   <style>
-    :root { --bg: #f6f7f9; --surface: #fff; --ink: #1c1c1e; --muted: #636366; --accent: #2f5cff; --ok: #34c759; --warn: #ff9f0a; --danger: #ff3b30; }
+    :root { --bg: #f6f7f9; --surface: #fff; --ink: #1c1c1e; --muted: #636366; --accent: #2f5cff; --ok: #1a9e4b; --warn: #c77700; --danger: #d70015; }
     * { box-sizing: border-box; }
     body { margin: 0; font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--ink); min-height: 100vh; display: grid; place-items: center; padding: 20px; }
     .card { background: var(--surface); border: 1px solid #e3e8f2; border-radius: 18px; box-shadow: 0 12px 36px -12px rgba(80,90,140,.24); padding: 28px; max-width: 520px; width: 100%; }
     .brand { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); font-weight: 700; }
     h1 { font-size: 22px; margin: 8px 0 4px; }
-    .numero { font-family: ui-monospace, 'Cascadia Mono', Menlo, monospace; font-size: 20px; background: #eef2ff; color: var(--accent); border-radius: 10px; padding: 6px 12px; display: inline-block; margin: 10px 0 18px; }
-    .status { display: inline-block; padding: 6px 14px; border-radius: 999px; font-weight: 700; font-size: 13px; background: #e8f7ee; color: var(--ok); }
+    .numero { font-family: ui-monospace, 'Cascadia Mono', Menlo, monospace; font-size: 20px; background: #eef2ff; color: var(--accent); border-radius: 10px; padding: 6px 12px; display: inline-block; margin: 10px 0 12px; }
+    .status { display: inline-block; padding: 7px 15px; border-radius: 999px; font-weight: 700; font-size: 13.5px; background: #e3ecff; color: var(--accent); }
+    .status[data-tone="ok"] { background: #e8f7ee; color: var(--ok); }
     .status[data-tone="warn"] { background: #fff3e0; color: var(--warn); }
     .status[data-tone="danger"] { background: #ffe5e3; color: var(--danger); }
     .status[data-tone="info"] { background: #e3ecff; color: var(--accent); }
@@ -20,6 +21,7 @@
     dt { color: var(--muted); }
     dd { margin: 0; font-weight: 600; text-align: right; }
     .msg { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+    .maj { margin-top: 10px; font-size: 12px; color: var(--muted); }
     .fallback { margin-top: 16px; padding: 12px 14px; border-radius: 12px; background: #f2f5fb; font-size: 13.5px; }
     footer { margin-top: 18px; font-size: 12px; color: var(--muted); }
   </style>
@@ -45,6 +47,8 @@
       notifie via WhatsApp dès que le suivi est mis à jour.
     </div>
 
+    <div class="maj" id="maj" hidden></div>
+
     <div class="fallback" id="fallback" hidden>
       <strong>Statut en cours de mise à jour.</strong>
       <br />
@@ -56,50 +60,151 @@
 
   <script>
     (function () {
+      /* Libellés « client » : la page ne montre jamais les codes internes bruts. */
+      var STATUS = {
+        RECU:           { label: 'Appareil reçu',              tone: 'info' },
+        EN_DIAGNOSTIC:  { label: 'Diagnostic en cours',        tone: 'info' },
+        EN_REPARATION:  { label: 'Réparation en cours',        tone: 'info' },
+        ATTENTE_PIECE:  { label: 'Attente d’une pièce',        tone: 'warn' },
+        REPARE:         { label: 'Prêt à récupérer',           tone: 'ok'   },
+        LIVRE:          { label: 'Livré',                      tone: 'ok'   },
+        ANNULE:         { label: 'Dossier annulé',             tone: 'danger' }
+      };
+
+      var params = new URLSearchParams(location.search);
       var numero = null;
       var m = location.pathname.match(/\/suivi\/([^/?#]+)/);
       if (m) numero = decodeURIComponent(m[1]);
-      if (!numero) {
-        var q = new URLSearchParams(location.search).get('d');
-        if (q) numero = q;
-      }
-      var numeroEl = document.getElementById('numero');
-      var statusEl = document.getElementById('status');
-      var fallbackEl = document.getElementById('fallback');
+      if (!numero) numero = params.get('d');
 
-      function render(st) {
-        numeroEl.textContent = st.numero || numero || '—';
-        statusEl.textContent = st.statut || 'CONNU';
-        statusEl.setAttribute('data-tone', st.statut === 'LIVRE' ? 'ok' : (st.statut === 'REPARE' ? 'ok' : 'info'));
-        document.getElementById('client').textContent = st.client || '—';
-        document.getElementById('appareil').textContent = [st.marque, st.modele].filter(Boolean).join(' ') || '—';
-        document.getElementById('technicien').textContent = st.technicien || '—';
-        document.getElementById('diagnostic').textContent = st.diagnostic || '—';
-        document.getElementById('date_reception').textContent = st.date_reception || '—';
-        document.getElementById('date_restitution').textContent = st.date_restitution || '—';
-        fallbackEl.hidden = true;
-        document.getElementById('msg').innerHTML =
-          'Statut en ligne pour le dossier <strong>' + (st.numero || numero) + '</strong>. ' +
-          'Merci de patienter — l&rsquo;atelier vous notifie via WhatsApp dès que le suivi est mis à jour.';
+      var urlStatut = STATUS[params.get('s')] ? params.get('s') : null;
+      var parsed = Date.parse(params.get('t') || '');
+      var urlTime = isNaN(parsed) ? 0 : parsed;
+
+      var el = {
+        numero: document.getElementById('numero'),
+        status: document.getElementById('status'),
+        client: document.getElementById('client'),
+        appareil: document.getElementById('appareil'),
+        technicien: document.getElementById('technicien'),
+        diagnostic: document.getElementById('diagnostic'),
+        dateReception: document.getElementById('date_reception'),
+        dateRestitution: document.getElementById('date_restitution'),
+        msg: document.getElementById('msg'),
+        maj: document.getElementById('maj'),
+        fallback: document.getElementById('fallback')
+      };
+
+      var done = false;
+
+      function setStatus(statut) {
+        var meta = STATUS[statut] || { label: statut || 'Statut inconnu', tone: 'info' };
+        el.status.textContent = meta.label;
+        el.status.setAttribute('data-tone', meta.tone);
+      }
+
+      function setText(node, value) {
+        node.textContent = value === null || value === undefined || value === '' ? '—' : String(value);
+      }
+
+      function formatDate(value) {
+        if (!value) return '—';
+        var d = new Date(value);
+        if (isNaN(d.getTime())) return String(value);
+        return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
+      }
+
+      function formatDateTime(value) {
+        if (!value) return '';
+        var d = new Date(value);
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleString('fr-FR', {
+          day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+      }
+
+      function showMaj(value) {
+        var label = formatDateTime(value);
+        if (!label) { el.maj.hidden = true; return; }
+        el.maj.textContent = 'Dernière mise à jour : ' + label;
+        el.maj.hidden = false;
+      }
+
+      function render(data) {
+        done = true;
+        var jsonStatut = data && STATUS[data.statut] ? data.statut : (data && data.statut ? data.statut : null);
+        var jsonTime = Date.parse((data && data.maj) || '');
+        jsonTime = isNaN(jsonTime) ? 0 : jsonTime;
+
+        /* Le JSON publié est prioritaire s'il est plus récent que le lien.
+           Sinon, le statut porté par le lien (envoyé par WhatsApp) fait foi. */
+        var statut = jsonStatut;
+        if (urlStatut && (!jsonStatut || jsonTime < urlTime)) statut = urlStatut;
+
+        setStatus(statut);
+        setText(el.numero, (data && data.numero) || numero);
+        setText(el.client, data && data.client);
+        setText(el.appareil, data ? [data.marque, data.modele].filter(Boolean).join(' ') : '');
+        setText(el.technicien, data && data.technicien);
+        setText(el.diagnostic, data && data.diagnostic);
+        setText(el.dateReception, formatDate(data && data.date_reception));
+        setText(el.dateRestitution, formatDate(data && data.date_restitution));
+
+        el.fallback.hidden = true;
+        el.msg.textContent = 'Statut en ligne pour le dossier ' + ((data && data.numero) || numero) +
+          '. Merci de patienter — l’atelier vous notifie via WhatsApp dès que le suivi est mis à jour.';
+
+        showMaj((data && data.maj) || (urlStatut ? params.get('t') : ''));
+      }
+
+      /* Affichage immédiat du statut porté par l'URL (avant même le réseau). */
+      if (urlStatut) {
+        setStatus(urlStatut);
+        el.numero.textContent = numero || '—';
+        showMaj(params.get('t'));
       }
 
       if (!numero) {
-        numeroEl.textContent = '—';
-        statusEl.textContent = 'INCONNU';
-        statusEl.setAttribute('data-tone', 'danger');
-        document.getElementById('msg').textContent = 'Aucun numéro de dossier fourni.';
+        el.numero.textContent = '—';
+        el.status.textContent = 'INCONNU';
+        el.status.setAttribute('data-tone', 'danger');
+        el.msg.textContent = 'Aucun numéro de dossier fourni.';
         return;
       }
 
-      fetch('https://raw.githubusercontent.com/mohlinkinpark1-prog/nexus-pro-releases/main/suivi/' + encodeURIComponent(numero) + '.json')
-        .then(function (r) { return r.ok ? r.json() : Promise.reject(new Error('not found')); })
-        .then(render)
-        .catch(function () {
-          statusEl.textContent = 'INDISPONIBLE';
-          statusEl.setAttribute('data-tone', 'warn');
-          fallbackEl.hidden = false;
-          document.getElementById('msg').textContent = 'Statut en cours de mise à jour pour ce dossier. Contactez l&rsquo;atelier.';
-        });
+      /* Chemin relatif : fonctionne sur GitHub Pages (/suivi/) comme en local.
+         Cache-buster : GitHub Pages met en cache ~10 minutes. */
+      var base = new URL('./', location.href);
+      var jsonUrl = new URL(encodeURIComponent(numero) + '.json', base).toString();
+
+      function load() {
+        return fetch(jsonUrl + '?t=' + Date.now(), { cache: 'no-store' })
+          .then(function (r) {
+            if (!r.ok) throw new Error('http ' + r.status);
+            return r.json();
+          })
+          .then(render)
+          .catch(function () {
+            if (urlStatut) {
+              /* Le lien contient déjà le statut : on garde l'affichage. */
+              el.fallback.hidden = false;
+              el.fallback.textContent = 'Détails du dossier non disponibles en ligne — le statut affiché provient du lien envoyé par l’atelier.';
+              return;
+            }
+            if (done) return;
+            el.status.textContent = 'INDISPONIBLE';
+            el.status.setAttribute('data-tone', 'warn');
+            el.fallback.hidden = false;
+            el.msg.textContent = 'Statut en cours de mise à jour pour ce dossier. Contactez l’atelier.';
+          });
+      }
+
+      load();
+      /* Rafraîchissement automatique : le client voit le statut évoluer
+         sans recharger la page. */
+      setInterval(function () {
+        if (document.visibilityState === 'visible') load();
+      }, 25000);
     })();
   </script>
 </body>
