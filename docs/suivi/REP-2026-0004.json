@@ -1,0 +1,15 @@
+{
+  "numero": "REP-2026-0004",
+  "statut": "REPARE",
+  "maj": "2026-11-13T01:31:40.586Z",
+  "client": "midoun",
+  "marque": "12 pro",
+  "modele": "12 pro",
+  "technicien": null,
+  "date_reception": "2026-11-12",
+  "date_restitution": null,
+  "garantie_jours": null,
+  "diagnostic": null,
+  "montant": null,
+  "site": "https://mohlinkinpark1-prog.github.io/nexus-pro-releases"
+}
