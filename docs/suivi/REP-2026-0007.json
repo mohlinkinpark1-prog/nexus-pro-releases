@@ -1,0 +1,15 @@
+{
+  "numero": "REP-2026-0007",
+  "statut": "RECU",
+  "maj": "2026-11-13T23:25:30.829Z",
+  "client": "MIDOUN MOHAMED",
+  "marque": "APPLE",
+  "modele": "14 PRO",
+  "technicien": null,
+  "date_reception": "2026-11-13",
+  "date_restitution": null,
+  "garantie_jours": null,
+  "diagnostic": null,
+  "montant": 14500,
+  "site": "https://mohlinkinpark1-prog.github.io/nexus-pro-releases"
+}
