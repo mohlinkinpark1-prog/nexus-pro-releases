@@ -1,7 +1,7 @@
 {
   "numero": "REP-2026-0001",
-  "statut": "ATTENTE_PIECE",
-  "maj": "2026-11-13T02:11:30.440Z",
+  "statut": "REPARE",
+  "maj": "2026-11-13T02:12:06.528Z",
   "client": "Yacine Bensalem",
   "marque": "Apple",
   "modele": "iPhone 13 Pro",
@@ -10,6 +10,6 @@
   "date_restitution": null,
   "garantie_jours": null,
   "diagnostic": "Afficheur tactile HS, remplacement vitre arrière nécessaire",
-  "montant": 24000,
+  "montant": 39000,
   "site": "https://mohlinkinpark1-prog.github.io/nexus-pro-releases"
 }
