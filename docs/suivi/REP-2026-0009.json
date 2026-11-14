@@ -1,0 +1,15 @@
+{
+  "numero": "REP-2026-0009",
+  "statut": "RECU",
+  "maj": "2026-11-14T00:05:49.541Z",
+  "client": "MIDOUN MOHAMED",
+  "marque": "POCO",
+  "modele": "X5",
+  "technicien": null,
+  "date_reception": "2026-11-14",
+  "date_restitution": null,
+  "garantie_jours": null,
+  "diagnostic": null,
+  "montant": 2500,
+  "site": "https://mohlinkinpark1-prog.github.io/nexus-pro-releases"
+}
