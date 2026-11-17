@@ -1,9 +1,9 @@
 <!doctype html>
-<html lang="ar" dir="rtl">
+<html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NEXUS PRO — تبع الإصلاح ديالك</title>
+  <title>NEXUS PRO — Suivi de votre réparation</title>
   <style>
     :root { --bg: #f6f7f9; --surface: #fff; --ink: #1c1c1e; --muted: #636366; --accent: #2f5cff; --ok: #1a9e4b; --warn: #c77700; --danger: #d70015; }
     * { box-sizing: border-box; }
@@ -28,47 +28,49 @@
 </head>
 <body>
   <main class="card">
-    <div class="brand">NEXUS PRO — الورشة و الكاسة</div>
-    <h1>تبع الإصلاح ديالك</h1>
-    <span class="status" id="status" data-tone="info">معروف</span>
+    <div class="brand">NEXUS PRO — Atelier &amp; Caisse</div>
+    <h1>Suivi de votre réparation</h1>
+    <span class="status" id="status" data-tone="info">Inconnu</span>
     <div class="numero" id="numero">—</div>
 
     <dl id="dl">
-      <dt>الكليان</dt><dd id="client">—</dd>
-      <dt>الجهاز</dt><dd id="appareil">—</dd>
-      <dt>التقني</dt><dd id="technicien">—</dd>
-      <dt>المشكل</dt><dd id="diagnostic">—</dd>
-      <dt>نهار الاستلام</dt><dd id="date_reception">—</dd>
-      <dt>التسليم المتوقّع</dt><dd id="date_restitution">—</dd>
+      <dt>Client</dt><dd id="client">—</dd>
+      <dt>Appareil</dt><dd id="appareil">—</dd>
+      <dt>Technicien</dt><dd id="technicien">—</dd>
+      <dt>Problème</dt><dd id="diagnostic">—</dd>
+      <dt>Date de réception</dt><dd id="date_reception">—</dd>
+      <dt>Livraison prévue</dt><dd id="date_restitution">—</dd>
     </dl>
 
     <div class="msg" id="msg">
-      هذي الصفحة توريك واش رجع الجهاز ديالك ولا لا. الكليان يقدر يشوفو
-      في أي وقت — الورشة تحدّثو كول مرة يتقدّم الإصلاح.
+      Cette page vous montre si votre appareil est prêt ou non. Le client peut
+      la consulter à tout moment — l'atelier la met à jour à chaque avancement
+      de la réparation.
     </div>
 
     <div class="maj" id="maj" hidden></div>
 
     <div class="fallback" id="fallback" hidden>
-      <strong>الستاتو راه يتحدّث.</strong>
+      <strong>Le statut se met à jour.</strong>
       <br />
-      الملف هذا مازال ما نشّرش على الأنترنت. اتصّل بالورشة مباشرة.
+      Le fichier détaillé n'est pas encore publié en ligne. Contactez
+      directement l'atelier.
     </div>
 
-    <footer>NEXUS PRO · تابع الورشة</footer>
+    <footer>NEXUS PRO · Suivi atelier</footer>
   </main>
 
   <script>
     (function () {
-      /* الستاتوات بالكليان: عمرو ما يبان كود داخلي خام. */
+      /* Statuts côté client : jamais de code interne brut affiché. */
       var STATUS = {
-        RECU:           { label: 'الجهاز وصل',            tone: 'info' },
-        EN_DIAGNOSTIC:  { label: 'الجهاز تحت التشخيص',    tone: 'info' },
-        EN_REPARATION:  { label: 'راهو يتصلّح',           tone: 'info' },
-        ATTENTE_PIECE:  { label: 'نستنّاو قطعة',          tone: 'warn' },
-        REPARE:         { label: 'واجد للاسترجاع',        tone: 'ok'   },
-        LIVRE:          { label: 'تسلّم',                 tone: 'ok'   },
-        ANNULE:         { label: 'الملف تلغى',            tone: 'danger' }
+        RECU:           { label: 'Appareil reçu',         tone: 'info' },
+        EN_DIAGNOSTIC:  { label: 'En diagnostic',         tone: 'info' },
+        EN_REPARATION:  { label: 'En réparation',         tone: 'info' },
+        ATTENTE_PIECE:  { label: 'Pièce attendue',        tone: 'warn' },
+        REPARE:         { label: 'Prêt à récupérer',      tone: 'ok'   },
+        LIVRE:          { label: 'Livré',                 tone: 'ok'   },
+        ANNULE:         { label: 'Dossier annulé',        tone: 'danger' }
       };
 
       var params = new URLSearchParams(location.search);
@@ -98,7 +100,7 @@
       var done = false;
 
       function setStatus(statut) {
-        var meta = STATUS[statut] || { label: statut || 'ستاتو مامعروفش', tone: 'info' };
+        var meta = STATUS[statut] || { label: statut || 'Statut inconnu', tone: 'info' };
         el.status.textContent = meta.label;
         el.status.setAttribute('data-tone', meta.tone);
       }
@@ -111,14 +113,14 @@
         if (!value) return '—';
         var d = new Date(value);
         if (isNaN(d.getTime())) return String(value);
-        return d.toLocaleDateString('ar-DZ', { day: '2-digit', month: 'long', year: 'numeric' });
+        return d.toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric' });
       }
 
       function formatDateTime(value) {
         if (!value) return '';
         var d = new Date(value);
         if (isNaN(d.getTime())) return '';
-        return d.toLocaleString('ar-DZ', {
+        return d.toLocaleString('fr-FR', {
           day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit'
         });
       }
@@ -126,7 +128,7 @@
       function showMaj(value) {
         var label = formatDateTime(value);
         if (!label) { el.maj.hidden = true; return; }
-        el.maj.textContent = 'آخر تحديث: ' + label;
+        el.maj.textContent = 'Dernière mise à jour : ' + label;
         el.maj.hidden = false;
       }
 
@@ -136,8 +138,9 @@
         var jsonTime = Date.parse((data && data.maj) || '');
         jsonTime = isNaN(jsonTime) ? 0 : jsonTime;
 
-        /* الـ JSON المششور هو الأول إلا كان أحدث من الرابط.
-           إلا لا، الستاتو اللي في الرابط (اللي وصل للكليان) هو الصحيح. */
+        /* Le JSON publié fait foi s'il est plus récent que le lien.
+           Sinon, le statut contenu dans le lien (celui transmis au
+           client) reste celui affiché. */
         var statut = jsonStatut;
         if (urlStatut && (!jsonStatut || jsonTime < urlTime)) statut = urlStatut;
 
@@ -151,13 +154,13 @@
         setText(el.dateRestitution, formatDate(data && data.date_restitution));
 
         el.fallback.hidden = true;
-        el.msg.textContent = 'ستاتو الملف ' + ((data && data.numero) || numero) + ' على الأنترنت.' +
-          ' الكليان يشوفو في أي وقت — الورشة تحدّثو كول مرة يتقدّم الإصلاح.';
+        el.msg.textContent = 'Statut du dossier ' + ((data && data.numero) || numero) + ' en ligne.' +
+          ' Le client peut le consulter à tout moment — l\'atelier le met à jour à chaque avancement de la réparation.';
 
         showMaj((data && data.maj) || (urlStatut ? params.get('t') : ''));
       }
 
-      /* الستاتو اللي في الرابط يبان دغيا (قبل الأنترنيت). */
+      /* Le statut du lien s'affiche aussitôt (avant le réseau). */
       if (urlStatut) {
         setStatus(urlStatut);
         el.numero.textContent = numero || '—';
@@ -166,14 +169,15 @@
 
       if (!numero) {
         el.numero.textContent = '—';
-        el.status.textContent = 'مامعروفش';
+        el.status.textContent = 'Inconnu';
         el.status.setAttribute('data-tone', 'danger');
-        el.msg.textContent = 'ما كاين حتى رقم ملف في الرابط.';
+        el.msg.textContent = 'Aucun numéro de dossier dans le lien.';
         return;
       }
 
-      /* طريق نسبي: يخدم على GitHub Pages (/suivi/) و حتى بالسرفور المحلي.
-         Cache-buster : GitHub Pages يخزّن الكاش ~10 دقايق. */
+      /* Chemin relatif : fonctionne sur GitHub Pages (/suivi/) et en
+         serveur local. Cache-buster : GitHub Pages garde le cache
+         ~10 minutes. */
       var base = new URL('./', location.href);
       var jsonUrl = new URL(encodeURIComponent(numero) + '.json', base).toString();
 
@@ -186,22 +190,22 @@
           .then(render)
           .catch(function () {
             if (urlStatut) {
-              /* الرابط فيه الستاتو من قبل: نحافظو على العرض. */
+              /* Le lien contenait déjà un statut : on conserve l'affichage. */
               el.fallback.hidden = false;
-              el.fallback.textContent = 'التفاصيل ديال الملف مازال ما توفرتش أنيرن — الستاتو اللي شافو جا من الرابط اللي صيفطتو الورشة.';
+              el.fallback.textContent = 'Les détails du dossier ne sont pas encore disponibles en ligne — le statut affiché vient du lien envoyé par l\'atelier.';
               return;
             }
             if (done) return;
-            el.status.textContent = 'ماكاينش';
+            el.status.textContent = 'Introuvable';
             el.status.setAttribute('data-tone', 'warn');
             el.fallback.hidden = false;
-            el.msg.textContent = 'ستاتو الملف هذا راه يتحدّث. اتصّل بالورشة.';
+            el.msg.textContent = 'Le statut de ce dossier est en cours de mise à jour. Contactez l\'atelier.';
           });
       }
 
       load();
-      /* التحديث أوتوماتيك: الكليان يشوف الستاتو كيتبدّل
-       بلا ما يعاود يفتح الصفحة. */
+      /* Actualisation automatique : le client voit le statut changer
+       sans rouvrir la page. */
       setInterval(function () {
         if (document.visibilityState === 'visible') load();
       }, 25000);
