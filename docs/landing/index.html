@@ -5,71 +5,96 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>NEXUS PRO — Le logiciel tout-en-un pour votre atelier</title>
 <meta name="description" content="Réparations, stock, caisse, clients, factures et suivi en ligne : NEXUS PRO réunit tout votre atelier dans un seul logiciel Windows." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
-  :root{--bg:#070b14;--surface:#0f1626;--line:rgba(255,255,255,.1);--ink:#f6f8ff;--mute:#a5b0c8;--accent:#5b7cff;--cyan:#38d6e8;--ok:#3ddc97}
+  :root{
+    --ink:#101a2e;--muted:#56637d;--accent:#4266f5;--cyan:#0ca9c9;
+    --glass:rgba(255,255,255,.62);--glass-strong:rgba(255,255,255,.82);
+    --stroke:rgba(255,255,255,.85);--shadow:0 24px 60px -24px rgba(29,53,112,.25);
+  }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,Arial,sans-serif;line-height:1.6}
-  a{color:inherit;text-decoration:none}
+  body{
+    margin:0;color:var(--ink);line-height:1.6;
+    font-family:Inter,Arial,sans-serif;
+    background:linear-gradient(135deg,#f7f9ff 0%,#eef4ff 48%,#eafaf8 100%);
+    overflow-x:hidden;
+  }
+  html[lang="ar"] body{font-family:Cairo,'Segoe UI',Arial,sans-serif}
+  .orb{position:fixed;border-radius:50%;filter:blur(90px);z-index:-1;pointer-events:none}
+  .orb.a{width:520px;height:520px;background:rgba(66,102,245,.20);top:-180px;left:-120px}
+  .orb.b{width:480px;height:480px;background:rgba(12,169,201,.16);top:30%;right:-180px}
+  .orb.c{width:420px;height:420px;background:rgba(120,90,240,.12);bottom:-160px;left:30%}
+  .glass{background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid var(--stroke);box-shadow:var(--shadow)}
   .wrap{width:min(1160px,92%);margin:0 auto}
-  header{position:sticky;top:0;z-index:10;background:rgba(7,11,20,.82);backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
-  .nav{display:flex;align-items:center;gap:24px;padding:14px 0}
-  .brand{display:flex;align-items:center;gap:12px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px;letter-spacing:.3px}
-  .brand img{width:38px;height:38px;border-radius:10px}
-  .nav a:not(.btn){color:var(--mute);font-size:14px;font-weight:600}
-  .nav a:not(.btn):hover{color:var(--ink)}
-  .nav .grow{flex:1}
-  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:10px;font-weight:700;font-size:14px;border:1px solid transparent;white-space:nowrap}
-  .btn-primary{background:var(--accent);color:#fff;box-shadow:0 12px 30px -12px var(--accent)}
-  .btn-ghost{border-color:var(--line);color:var(--ink)}
-  .btn:hover{transform:translateY(-1px)}
-  .hero{position:relative;overflow:hidden;padding:90px 0 70px}
-  .hero:before{content:"";position:absolute;inset:-40% 30% 40% -10%;background:radial-gradient(circle,rgba(91,124,255,.22),transparent 65%);pointer-events:none}
-  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;position:relative}
-  .badge{display:inline-block;padding:7px 14px;border-radius:100px;border:1px solid var(--line);background:rgba(255,255,255,.04);font-size:12px;font-weight:700;letter-spacing:1.4px;color:var(--cyan);text-transform:uppercase}
-  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,5.4vw,70px);line-height:1.04;letter-spacing:-2px;margin:22px 0 18px}
+  header{position:sticky;top:0;z-index:20;margin:14px auto 0;border-radius:18px}
+  .nav{display:flex;align-items:center;gap:22px;padding:12px 18px;border-radius:18px}
+  .brand{display:flex;align-items:center;gap:10px;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:19px}
+  .brand img{width:38px;height:38px;border-radius:11px}
+  .nav a:not(.btn){color:var(--muted);font-size:14px;font-weight:600}
+  .nav a:not(.btn):hover{color:var(--accent)}
+  .grow{flex:1}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border-radius:11px;font-weight:700;font-size:14px;border:1px solid transparent;white-space:nowrap;transition:transform .15s ease}
+  .btn:hover{transform:translateY(-2px)}
+  .btn-primary{background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff;box-shadow:0 14px 30px -14px rgba(66,102,245,.7)}
+  .btn-ghost{background:rgba(255,255,255,.7);border-color:rgba(255,255,255,.9);color:var(--ink)}
+  .langs{display:flex;gap:4px;padding:4px;border-radius:100px;background:rgba(255,255,255,.7);border:1px solid var(--stroke)}
+  .lang-btn{border:0;background:transparent;color:var(--muted);font-weight:700;font-size:12px;padding:6px 12px;border-radius:100px;cursor:pointer}
+  .lang-btn.active{background:linear-gradient(135deg,var(--accent),var(--cyan));color:#fff}
+  .hero{position:relative;padding:78px 0 56px}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:52px;align-items:center}
+  .badge{display:inline-block;padding:7px 15px;border-radius:100px;background:rgba(255,255,255,.75);border:1px solid var(--stroke);font-size:12px;font-weight:800;letter-spacing:1.2px;color:var(--accent)}
+  h1{font-family:'Space Grotesk',sans-serif;font-size:clamp(42px,5.2vw,68px);line-height:1.05;letter-spacing:-2px;margin:22px 0 18px}
+  html[lang="ar"] h1,html[lang="ar"] h2,html[lang="ar"] h3{font-family:Cairo,sans-serif;letter-spacing:0}
   h1 span{color:var(--accent)}
-  .lead{font-size:19px;color:var(--mute);max-width:560px}
-  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
-  .visual{position:relative;border-radius:22px;border:1px solid var(--line);padding:10px;background:linear-gradient(145deg,rgba(91,124,255,.16),rgba(56,214,232,.06));box-shadow:0 40px 90px -40px rgba(0,0,0,.9)}
-  .visual img{width:100%;display:block;border-radius:14px}
-  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:16px;overflow:hidden;margin-top:64px}
-  .stat{background:var(--surface);padding:24px;text-align:center}
-  .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:34px;color:var(--ink)}
-  .stat span{font-size:13px;color:var(--mute)}
-  section{padding:80px 0}
+  .lead{font-size:18px;color:var(--muted);max-width:560px}
+  .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
+  .visual{padding:10px;border-radius:24px;overflow:hidden}
+  .visual img{width:100%;display:block;border-radius:16px}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:52px}
+  .stat{border-radius:18px;padding:22px;text-align:center}
+  .stat b{display:block;font-family:'Space Grotesk',sans-serif;font-size:32px;color:var(--accent)}
+  .stat span{font-size:13px;color:var(--muted)}
+  section{padding:70px 0}
   .eyebrow{color:var(--cyan);font-size:12px;font-weight:800;letter-spacing:2px;text-transform:uppercase}
-  h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.6vw,46px);letter-spacing:-1px;margin:12px 0 16px}
-  .sub{color:var(--mute);max-width:650px;font-size:17px}
-  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:40px}
-  .card{padding:28px;border-radius:18px;border:1px solid var(--line);background:linear-gradient(160deg,rgba(255,255,255,.05),rgba(255,255,255,.015))}
-  .card .num{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--accent);font-weight:700}
-  .card h3{font-family:'Space Grotesk',sans-serif;font-size:21px;margin:14px 0 8px}
-  .card p{color:var(--mute);font-size:15px;margin:0}
-  .split{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
-  .shots{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .shots img{width:100%;border-radius:14px;border:1px solid var(--line)}
-  ul.checks{list-style:none;padding:0;margin:26px 0 0;display:grid;gap:12px}
-  ul.checks li{padding-left:30px;position:relative;color:var(--mute)}
-  ul.checks li:before{content:"✓";position:absolute;left:0;color:var(--ok);font-weight:800}
-  .cta{text-align:center;border-radius:24px;padding:60px 24px;background:radial-gradient(circle at 50% 0,rgba(91,124,255,.28),transparent 70%),var(--surface);border:1px solid var(--line)}
-  footer{border-top:1px solid var(--line);padding:34px 0;color:var(--mute);font-size:14px}
-  .foot{display:flex;gap:24px;flex-wrap:wrap;align-items:center}
-  .foot .grow{flex:1}
+  h2{font-family:'Space Grotesk',sans-serif;font-size:clamp(30px,3.4vw,44px);letter-spacing:-1px;margin:12px 0 14px}
+  .sub{color:var(--muted);max-width:650px;font-size:16px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px}
+  .card{padding:26px;border-radius:20px}
+  .card .num{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:var(--accent)}
+  .card h3{font-family:'Space Grotesk',sans-serif;font-size:20px;margin:12px 0 8px}
+  .card p{color:var(--muted);font-size:14.5px;margin:0}
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:46px;align-items:center}
+  .shots{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .shots img{width:100%;border-radius:16px;border:1px solid var(--stroke)}
+  ul.checks{list-style:none;padding:0;margin:24px 0 0;display:grid;gap:11px}
+  ul.checks li{padding-inline-start:30px;position:relative;color:var(--muted)}
+  ul.checks li:before{content:"✓";position:absolute;inset-inline-start:0;color:#0ea97c;font-weight:800}
+  .cta{text-align:center;border-radius:26px;padding:56px 24px}
+  footer{border-top:1px solid rgba(255,255,255,.8);padding:30px 0;color:var(--muted);font-size:14px;margin-top:40px}
+  .foot{display:flex;gap:22px;flex-wrap:wrap;align-items:center}
   @media(max-width:900px){.grid,.split{grid-template-columns:1fr}.cards{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.shots{grid-template-columns:1fr}.nav a:not(.btn){display:none}}
+  html[dir="rtl"] .nav{direction:rtl}
+  html[dir="rtl"] .actions{justify-content:flex-start}
 </style>
 </head>
 <body>
-<header>
+<div class="orb a"></div><div class="orb b"></div><div class="orb c"></div>
+
+<header class="glass">
   <div class="wrap nav">
-    <a class="brand" href="#top"><img src="../assets/logo-nexuspro.png" alt="Logo NEXUS PRO" /> NEXUS <span style="color:var(--accent)">PRO</span></a>
-    <a href="#fonctions">Fonctionnalités</a>
-    <a href="#suivi">Suivi client</a>
-    <a href="#telecharger">Télécharger</a>
+    <a class="brand" href="#top"><img src="../assets/logo-nexuspro.png" alt="NEXUS PRO" /> NEXUS PRO</a>
+    <a href="#fonctions" data-i18n="navFeatures">Fonctionnalités</a>
+    <a href="#suivi" data-i18n="navTracking">Suivi client</a>
+    <a href="#telecharger" data-i18n="navDownload">Télécharger</a>
     <span class="grow"></span>
-    <a class="btn btn-ghost" href="../suivi/">Suivre une réparation</a>
-    <a class="btn btn-primary" href="https://github.com/mohlinkinpark1-prog/nexus-pro-releases/releases/latest">Télécharger</a>
+    <div class="langs">
+      <button class="lang-btn active" data-lang="fr" type="button">FR</button>
+      <button class="lang-btn" data-lang="ar" type="button">العربية</button>
+    </div>
+    <a class="btn btn-primary" href="../suivi/" data-i18n="navTry">Suivre une réparation</a>
   </div>
 </header>
 
@@ -77,36 +102,36 @@
   <div class="hero">
     <div class="wrap grid">
       <div>
-        <span class="badge">Version 1.0.3 · Windows</span>
-        <h1>Votre atelier,<br /><span>enfin organisé.</span></h1>
-        <p class="lead">Réparations, stock, caisse, clients, factures et suivi en ligne. Tout votre atelier dans un seul logiciel, sans papier et sans erreur.</p>
+        <span class="badge" data-i18n="badge">Version 1.0.3 · Windows</span>
+        <h1><span data-i18n="hero1">Votre atelier,</span><br /><span data-i18n="hero2">enfin organisé.</span></h1>
+        <p class="lead" data-i18n="lead">Réparations, stock, caisse, clients, factures et suivi en ligne. Tout votre atelier dans un seul logiciel, sans papier et sans erreur.</p>
         <div class="actions">
-          <a class="btn btn-primary" href="#suivi">Découvrir le suivi client</a>
-          <a class="btn btn-ghost" href="#fonctions">Voir les fonctionnalités</a>
+          <a class="btn btn-primary" href="#suivi" data-i18n="ctaTracking">Découvrir le suivi client</a>
+          <a class="btn btn-ghost" href="#fonctions" data-i18n="ctaFeatures">Voir les fonctionnalités</a>
         </div>
       </div>
-      <div class="visual"><img src="../assets/app-ticket-qr.png" alt="Ticket de réparation avec QR code dans NEXUS PRO" /></div>
+      <div class="visual glass"><img src="../assets/app-ticket-qr.png" alt="Ticket de réparation avec QR code" /></div>
     </div>
     <div class="wrap stats">
-      <div class="stat"><b>1</b><span>logiciel pour tout l'atelier</span></div>
-      <div class="stat"><b>6</b><span>modules essentiels</span></div>
-      <div class="stat"><b>0</b><span>papier, zéro doublon</span></div>
-      <div class="stat"><b>24h/24</b><span>suivi client en ligne</span></div>
+      <div class="stat glass"><b>1</b><span data-i18n="s1">logiciel pour tout l'atelier</span></div>
+      <div class="stat glass"><b>6</b><span data-i18n="s2">modules essentiels</span></div>
+      <div class="stat glass"><b>0</b><span data-i18n="s3">papier, zéro doublon</span></div>
+      <div class="stat glass"><b>24h/24</b><span data-i18n="s4">suivi client en ligne</span></div>
     </div>
   </div>
 
   <section id="fonctions">
     <div class="wrap">
-      <div class="eyebrow">Tout ce qu'il faut</div>
-      <h2>Un seul outil, six métiers couverts</h2>
-      <p class="sub">Conçu pour le gérant d'atelier : vous gérez la journée entière sans jongler entre un carnet, un tableur et une caisse.</p>
+      <div class="eyebrow" data-i18n="eyebrow1">Tout ce qu'il faut</div>
+      <h2 data-i18n="title1">Un seul outil, six métiers couverts</h2>
+      <p class="sub" data-i18n="sub1">Conçu pour le gérant d'atelier : vous gérez la journée entière sans jongler entre un carnet, un tableur et une caisse.</p>
       <div class="cards">
-        <div class="card"><div class="num">01</div><h3>Réparations</h3><p>Fiches client, statuts, techniciens, commissions et tickets imprimables avec QR code.</p></div>
-        <div class="card"><div class="num">02</div><h3>Stock & fournisseurs</h3><p>Références et codes-barres automatiques, mouvements, seuils d'alerte et dettes suivies.</p></div>
-        <div class="card"><div class="num">03</div><h3>Caisse & encaissement</h3><p>Panier, scan de code-barres, sessions de caisse, écarts et ticketclient immédiat.</p></div>
-        <div class="card"><div class="num">04</div><h3>Suivi client en ligne</h3><p>Chaque dossier a sa page web. Le client voit l'avancement depuis son téléphone, sans compte.</p></div>
-        <div class="card"><div class="num">05</div><h3>Alertes Telegram</h3><p>Nouveau dépôt, appareil prêt, stock bas : l'atelier est prévenu en temps réel.</p></div>
-        <div class="card"><div class="num">06</div><h3>Comptabilité & bilan</h3><p>Factures, état G50, statistiques et import CSV pour garder le contrôle chaque jour.</p></div>
+        <div class="card glass"><div class="num">01</div><h3 data-i18n="f1t">Réparations</h3><p data-i18n="f1d">Fiches client, statuts, techniciens, commissions et tickets imprimables avec QR code.</p></div>
+        <div class="card glass"><div class="num">02</div><h3 data-i18n="f2t">Stock & fournisseurs</h3><p data-i18n="f2d">Références et codes-barres automatiques, mouvements, seuils d'alerte et dettes suivies.</p></div>
+        <div class="card glass"><div class="num">03</div><h3 data-i18n="f3t">Caisse & encaissement</h3><p data-i18n="f3d">Panier, scan de code-barres, sessions de caisse, écarts et ticket client immédiat.</p></div>
+        <div class="card glass"><div class="num">04</div><h3 data-i18n="f4t">Suivi client en ligne</h3><p data-i18n="f4d">Chaque dossier a sa page web. Le client voit l'avancement depuis son téléphone, sans compte.</p></div>
+        <div class="card glass"><div class="num">05</div><h3 data-i18n="f5t">Alertes Telegram</h3><p data-i18n="f5d">Nouveau dépôt, appareil prêt, stock bas : l'atelier est prévenu en temps réel.</p></div>
+        <div class="card glass"><div class="num">06</div><h3 data-i18n="f6t">Comptabilité & bilan</h3><p data-i18n="f6d">Factures, état G50, statistiques et import CSV pour garder le contrôle chaque jour.</p></div>
       </div>
     </div>
   </section>
@@ -114,33 +139,33 @@
   <section id="suivi">
     <div class="wrap split">
       <div>
-        <div class="eyebrow">Le suivi qui change tout</div>
-        <h2>Le client suit son appareil. Vous ne répondez plus dix fois à la même question.</h2>
-        <p class="sub">Un QR code sur le ticket, un lien, et le statut se met à jour automatiquement à chaque étape de la réparation.</p>
+        <div class="eyebrow" data-i18n="eyebrow2">Le suivi qui change tout</div>
+        <h2 data-i18n="title2">Le client suit son appareil. Vous ne répondez plus dix fois à la même question.</h2>
+        <p class="sub" data-i18n="sub2">Un QR code sur le ticket, un lien, et le statut se met à jour automatiquement à chaque étape de la réparation.</p>
         <ul class="checks">
-          <li>Aucune application à installer pour le client</li>
-          <li>Statut clair : reçu, en réparation, pièce attendue, prêt</li>
-          <li>Mise à jour automatique depuis l'atelier</li>
-          <li>Liens et QR code déjà intégrés au ticket imprimé</li>
+          <li data-i18n="c1">Aucune application à installer pour le client</li>
+          <li data-i18n="c2">Statut clair : reçu, en réparation, pièce attendue, prêt</li>
+          <li data-i18n="c3">Mise à jour automatique depuis l'atelier</li>
+          <li data-i18n="c4">Liens et QR code déjà intégrés au ticket imprimé</li>
         </ul>
-        <div class="actions"><a class="btn btn-primary" href="../suivi/">Essayer le suivi</a></div>
+        <div class="actions"><a class="btn btn-primary" href="../suivi/" data-i18n="ctaTry">Essayer le suivi</a></div>
       </div>
       <div class="shots">
-        <img src="../assets/app-suivi-pages.png" alt="Pages de suivi de réparation" />
-        <img src="../assets/app-ticket-qr.png" alt="Ticket avec QR code" />
+        <img class="glass" src="../assets/app-suivi-pages.png" alt="Pages de suivi" />
+        <img class="glass" src="../assets/app-ticket-qr.png" alt="Ticket avec QR code" />
       </div>
     </div>
   </section>
 
   <section id="telecharger">
     <div class="wrap">
-      <div class="cta">
-        <div class="eyebrow">Prêt à commencer ?</div>
-        <h2>Arrêtez le papier. Reprenez le contrôle.</h2>
-        <p class="sub" style="margin:0 auto">Téléchargez l'installateur Windows et découvrez NEXUS PRO sur vos propres dossiers de démonstration.</p>
+      <div class="cta glass">
+        <div class="eyebrow" data-i18n="eyebrow3">Prêt à commencer ?</div>
+        <h2 data-i18n="title3">Arrêtez le papier. Reprenez le contrôle.</h2>
+        <p class="sub" style="margin:0 auto" data-i18n="sub3">Téléchargez l'installateur Windows et découvrez NEXUS PRO sur vos propres dossiers de démonstration.</p>
         <div class="actions" style="justify-content:center">
-          <a class="btn btn-primary" href="https://github.com/mohlinkinpark1-prog/nexus-pro-releases/releases/latest">Télécharger NEXUS PRO</a>
-          <a class="btn btn-ghost" href="../suivi/">Voir une page de suivi</a>
+          <a class="btn btn-primary" href="https://github.com/mohlinkinpark1-prog/nexus-pro-releases/releases/latest" data-i18n="ctaDownload">Télécharger NEXUS PRO</a>
+          <a class="btn btn-ghost" href="../suivi/" data-i18n="ctaSee">Voir une page de suivi</a>
         </div>
       </div>
     </div>
@@ -150,12 +175,74 @@
 <footer>
   <div class="wrap foot">
     <a class="brand" href="#top"><img src="../assets/logo-nexuspro.png" alt="" /> NEXUS PRO</a>
-    <span>Logiciel d'atelier · Réparations, stock, caisse et suivi client.</span>
+    <span data-i18n="footDesc">Logiciel d'atelier · Réparations, stock, caisse et suivi client.</span>
     <span class="grow"></span>
-    <a href="https://github.com/mohlinkinpark1-prog/nexus-pro-releases/releases/latest">Téléchargement</a>
-    <a href="../suivi/">Suivi client</a>
+    <a href="https://github.com/mohlinkinpark1-prog/nexus-pro-releases/releases/latest" data-i18n="navDownload">Téléchargement</a>
+    <a href="../suivi/" data-i18n="footTracking">Suivi client</a>
     <a href="https://www.facebook.com/ghzdev">Facebook</a>
   </div>
 </footer>
+
+<script>
+const dict = {
+  fr: {
+    navFeatures:"Fonctionnalités", navTracking:"Suivi client", navDownload:"Télécharger", navTry:"Suivre une réparation",
+    badge:"Version 1.0.3 · Windows", hero1:"Votre atelier,", hero2:"enfin organisé.",
+    lead:"Réparations, stock, caisse, clients, factures et suivi en ligne. Tout votre atelier dans un seul logiciel, sans papier et sans erreur.",
+    ctaTracking:"Découvrir le suivi client", ctaFeatures:"Voir les fonctionnalités",
+    s1:"logiciel pour tout l'atelier", s2:"modules essentiels", s3:"papier, zéro doublon", s4:"suivi client en ligne",
+    eyebrow1:"Tout ce qu'il faut", title1:"Un seul outil, six métiers couverts",
+    sub1:"Conçu pour le gérant d'atelier : vous gérez la journée entière sans jongler entre un carnet, un tableur et une caisse.",
+    f1t:"Réparations", f1d:"Fiches client, statuts, techniciens, commissions et tickets imprimables avec QR code.",
+    f2t:"Stock & fournisseurs", f2d:"Références et codes-barres automatiques, mouvements, seuils d'alerte et dettes suivies.",
+    f3t:"Caisse & encaissement", f3d:"Panier, scan de code-barres, sessions de caisse, écarts et ticket client immédiat.",
+    f4t:"Suivi client en ligne", f4d:"Chaque dossier a sa page web. Le client voit l'avancement depuis son téléphone, sans compte.",
+    f5t:"Alertes Telegram", f5d:"Nouveau dépôt, appareil prêt, stock bas : l'atelier est prévenu en temps réel.",
+    f6t:"Comptabilité & bilan", f6d:"Factures, état G50, statistiques et import CSV pour garder le contrôle chaque jour.",
+    eyebrow2:"Le suivi qui change tout", title2:"Le client suit son appareil. Vous ne répondez plus dix fois à la même question.",
+    sub2:"Un QR code sur le ticket, un lien, et le statut se met à jour automatiquement à chaque étape de la réparation.",
+    c1:"Aucune application à installer pour le client", c2:"Statut clair : reçu, en réparation, pièce attendue, prêt",
+    c3:"Mise à jour automatique depuis l'atelier", c4:"Liens et QR code déjà intégrés au ticket imprimé", ctaTry:"Essayer le suivi",
+    eyebrow3:"Prêt à commencer ?", title3:"Arrêtez le papier. Reprenez le contrôle.",
+    sub3:"Téléchargez l'installateur Windows et découvrez NEXUS PRO sur vos propres dossiers de démonstration.",
+    ctaDownload:"Télécharger NEXUS PRO", ctaSee:"Voir une page de suivi",
+    footDesc:"Logiciel d'atelier · Réparations, stock, caisse et suivi client.", footTracking:"Suivi client"
+  },
+  ar: {
+    navFeatures:"المزايا", navTracking:"متابعة العملاء", navDownload:"تنزيل", navTry:"تتبّع إصلاح",
+    badge:"الإصدار 1.0.3 · ويندوز", hero1:"ورشتك،", hero2:"أخيراً منظّمة.",
+    lead:"الإصلاحات، المخزون، الكاسة، العملاء، الفواتير والمتابعة عبر الإنترنت. كل ورشتك في برنامج واحد، بلا أوراق وبلا أخطاء.",
+    ctaTracking:"اكتشف متابعة العملاء", ctaFeatures:"اطّلع على المزايا",
+    s1:"برنامج واحد لكل الورشة", s2:"وحدات أساسية", s3:"صفر أوراق", s4:"متابعة العملاء عبر الإنترنت",
+    eyebrow1:"كل ما تحتاجه", title1:"برنامج واحد، ست وظائف أساسية",
+    sub1:"مصمّم لصاحب الورشة: تدير يومك كاملاً دون التنقل بين دفتر وجدول وكاسة.",
+    f1t:"الإصلاحات", f1d:"ملفات العملاء، الحالات، الفنيون، العمولات وتذاكر قابلة للطباعة مع رمز QR.",
+    f2t:"المخزون والموردون", f2d:"مراجع ورموز تلقائية، حركات، تنبيهات وديون متابَعة.",
+    f3t:"الكاسة والدفع", f3d:"سلة، مسح رمز المنتج، جلسات الكاسة، الفروق وتذكرة فورية للعميل.",
+    f4t:"متابعة العملاء عبر الإنترنت", f4d:"كل ملف له صفحته الخاصة. العميل يرى التقدّم من هاتفه دون حساب.",
+    f5t:"تنبيهات تيليجرام", f5d:"إيداع جديد، جهاز جاهز، مخزون منخفض: الورشة تُبلَّغ فوراً.",
+    f6t:"المحاسبة والتقرير", f6d:"فواتير، جدول G50، إحصائيات واستيراد CSV للتحكم كل يوم.",
+    eyebrow2:"متابعة تغيّر كل شيء", title2:"العميل يتابع جهازه. وأنت لم تعد ترد عشر مرات على نفس السؤال.",
+    sub2:"رمز QR على التذكرة، رابط، والحالة تتحدّث تلقائياً مع كل مرحلة من مراحل الإصلاح.",
+    c1:"لا يحتاج العميل لتثبيت أي تطبيق", c2:"حالة واضحة: مستلم، قيد الإصلاح، بانتظار قطعة، جاهز",
+    c3:"تحديث تلقائي من الورشة", c4:"الروابط ورمز QR مدمجان في التذكرة المطبوعة", ctaTry:"جرّب المتابعة",
+    eyebrow3:"جاهز للبدء؟", title3:"توقف عن الورق. استعد السيطرة.",
+    sub3:"نزّل مُثبّت ويندوز واكتشف NEXUS PRO على ملفات العرض الخاصة بك.",
+    ctaDownload:"تنزيل NEXUS PRO", ctaSee:"شاهد صفحة متابعة",
+    footDesc:"برنامج ورشة · إصلاحات، مخزون، كاسة ومتابعة عملاء.", footTracking:"متابعة العملاء"
+  }
+};
+function setLang(lang){
+  const d = dict[lang] || dict.fr;
+  document.documentElement.lang = lang;
+  document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const v = d[el.dataset.i18n];
+    if (v !== undefined) el.textContent = v;
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === lang));
+}
+document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => setLang(b.dataset.lang)));
+</script>
 </body>
 </html>
