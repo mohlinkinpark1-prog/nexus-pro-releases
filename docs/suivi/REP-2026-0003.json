@@ -1,15 +1,15 @@
 {
   "numero": "REP-2026-0003",
-  "statut": "LIVRE",
-  "maj": "2026-11-13T14:42:35.101Z",
-  "client": "Nadia Belkacem",
+  "statut": "REPARE",
+  "maj": "2026-11-19T11:40:00.000Z",
+  "client": "Yacine Hamdani",
   "marque": "Xiaomi",
   "modele": "Redmi Note 12",
-  "technicien": "Karim Amrani",
-  "date_reception": "2026-11-10",
-  "date_restitution": "2026-11-13",
-  "garantie_jours": null,
-  "diagnostic": "Remplacement batterie originale effectué avec succès",
+  "technicien": "Youssef",
+  "date_reception": "2026-11-17",
+  "date_restitution": null,
+  "garantie_jours": 90,
+  "diagnostic": "Écran remplacé, connectique de charge vérifiée",
   "montant": 4200,
   "site": "https://mohlinkinpark1-prog.github.io/nexus-pro-releases"
 }
