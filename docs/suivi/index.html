@@ -144,7 +144,7 @@
     var html = '';
     for (var i = 0; i < examples.length; i++) {
       var e = examples[i];
-      html += '<a class="case glass" href="./' + encodeURIComponent(e.id) + '">' +
+      html += '<a class="case glass" href="./?d=' + encodeURIComponent(e.id) + '">' +
         '<span class="num">' + e.id + '</span>' +
         '<h2>' + e.appareil + '</h2>' +
         pill(e.statut) +
