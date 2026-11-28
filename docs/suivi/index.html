@@ -268,8 +268,11 @@
   // Sans clé publiée (ancien lien) : seul le statut porté par le lien.
   if (!cle) { render(fromUrl); return; }
 
-  // Lien récent : <atelier>/<clé>.json ; ancien lien sans atelier : <clé>.json.
-  var url = new URL((atelier ? atelier + '/' : '') + cle + '.json', location.href);
+  // Les résumés sont lus dans le dépôt de données (nexus-pro-suivi), jamais
+  // à côté de la page : le jeton qui écrit les données ne peut pas toucher
+  // à cette page. Lien récent : <atelier>/<clé>.json ; ancien : <clé>.json.
+  var DATA_BASE = 'https://raw.githubusercontent.com/mohlinkinpark1-prog/nexus-pro-suivi/main/docs/suivi/';
+  var url = new URL((atelier ? atelier + '/' : '') + cle + '.json', DATA_BASE);
   url.searchParams.set('t', Date.now());
 
   fetch(url.toString(), { cache: 'no-store' })
